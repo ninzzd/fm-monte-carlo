@@ -4,8 +4,15 @@ class fm_mod:
         self.kf = kf
         self.wc = wc
         self.Ac = Ac
-    def modulate(self,m:np.array,t:np.array):
-        del_t:float
-        if len(t) > 1:
-            del_t = t[1] - t[0] # uniform time samples (obviously)
-        psi = np.zeros()
+    def modulate(self,m:np.array,t:np.array,ts:float):
+        phi = np.zeros(len(m))
+        for i in range(0,len(m)):
+            if i == 0:
+                phi[i] = m[i]*ts
+            else:
+                phi[i] = phi[i-1] + m[i]*ts
+        phi = phi*self.kf*2*np.pi
+        print(phi)
+        phi = phi + self.wc*t
+        psi = self.Ac*np.cos(phi)
+        return psi
