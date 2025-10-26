@@ -26,7 +26,7 @@ Ac = 1
 fc = 1e3
 
 modulator:fm_mod = fm_mod(kf=kf,Ac=Ac,fc=fc)
-demodulator:fm_demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_cutoff=fm/4,fs=fs,lpf_order=2000)
+demodulator:fm_demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_cutoff=fm/4,fs=fs,lpf_order=1000)
 psi = modulator.modulate(m,t,Ts)
 # print(psi)
 demod = demodulator.demodulate(psi)
@@ -42,7 +42,8 @@ ax.set(
     ylabel="m(t)",
     title="Message Signal Waveform",
 )
-ax.set_xlim(left=1,right=1+2/fm)
+t0 = 1
+ax.set_xlim(left=t0,right=t0+2/fm)
 ax.grid()
 plt.show()
 fig.savefig("docs/fm_demod_test.png")
