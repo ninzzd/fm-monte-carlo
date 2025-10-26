@@ -5,9 +5,11 @@ from fm.fm_demod import fm_demod
 '''
     Ac = 1
     Am = 1
-    kv = 75
-    fm = 1e3
-    fc = 1e6
+    kv = 750
+    fm = 10
+    fc = 1e3
+    fs = 1e5
+    n = 2**18
 '''
 # Sampling parameters
 n:int = 2**18

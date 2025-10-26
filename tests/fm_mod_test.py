@@ -4,13 +4,14 @@ from fm.fm_mod import fm_mod
 '''
     Ac = 1
     Am = 1
-    kf = 1e3
+    kf = 750
     fm = 10
     fc = 1e3
-
+    fs = 1e5
+    n = 2**16
 '''
 # Sampling parameters
-n:int = 2**14
+n:int = 2**16
 fs:float = 1e5
 Ts:float = 1/fs
 t = np.arange(0,n*Ts,Ts)
@@ -38,6 +39,8 @@ ax.set(
     ylabel="m(t)",
     title="Message Signal Waveform"
 )
+t0 = 0.3
+ax.set_xlim(left=t0,right=t0+2/fm)
 ax.grid()
 plt.show()
 fig.savefig("docs/fm_mod_test.png")
