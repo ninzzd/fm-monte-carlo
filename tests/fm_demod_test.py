@@ -10,7 +10,7 @@ from fm.fm_demod import fm_demod
     fc = 1e6
 '''
 # Sampling parameters
-n:int = 2**14
+n:int = 2**18
 fs:float = 1e5
 Ts:float = 1/fs
 t = np.arange(0,n*Ts,Ts)
@@ -26,7 +26,7 @@ Ac = 1
 fc = 1e3
 
 modulator:fm_mod = fm_mod(kf=kf,Ac=Ac,fc=fc)
-demodulator:fm_demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_cutoff=2*fm,fs=fs,lpf_order=6)
+demodulator:fm_demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_cutoff=fm/4,fs=fs,lpf_order=2000)
 psi = modulator.modulate(m,t,Ts)
 # print(psi)
 demod = demodulator.demodulate(psi)
@@ -36,12 +36,13 @@ fig, ax = plt.subplots()
 
 ax.plot(t,m,'r')
 ax.plot(t,psi,'b')
-ax.plot(t,demod,c='green',ls='--')
+ax.plot(t,demod,c='green')
 ax.set(
     xlabel="Time (s)",
     ylabel="m(t)",
-    title="Message Signal Waveform"
+    title="Message Signal Waveform",
 )
+ax.set_xlim(left=1,right=1+2/fm)
 ax.grid()
 plt.show()
 fig.savefig("docs/fm_demod_test.png")
