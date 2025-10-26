@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from fm.fm_mod import fm_mod
+from fm.fm_demod import fm_demod
 '''
     Ac = 1
     Am = 1
-    kf = 1e3
-    fm = 10
-    fc = 1e3
-
+    kv = 75
+    fm = 1e3
+    fc = 1e6
 '''
 # Sampling parameters
 n:int = 2**14
@@ -25,14 +25,18 @@ kf = 3*1e3/4
 Ac = 1
 fc = 1e3
 
+modulator:fm_mod = fm_mod(kf=kf,Ac=Ac,fc=fc)
+demodulator:fm_demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_cutoff=2*fm,fs=fs,lpf_order=6)
+psi = modulator.modulate(m,t,Ts)
+# print(psi)
+demod = demodulator.demodulate(psi)
+
 # Message signal plot
 fig, ax = plt.subplots()
 
-modulator:fm_mod = fm_mod(kf=kf,Ac=Ac,fc=fc)
-psi = modulator.modulate(m,t,Ts)
-
 ax.plot(t,m,'r')
 ax.plot(t,psi,'b')
+ax.plot(t,demod,c='green',ls='--')
 ax.set(
     xlabel="Time (s)",
     ylabel="m(t)",
@@ -40,6 +44,6 @@ ax.set(
 )
 ax.grid()
 plt.show()
-fig.savefig("docs/fm_mod_test.png")
+fig.savefig("docs/fm_demod_test.png")
 
 
