@@ -15,6 +15,7 @@ n:int = 2**16
 fs:float = 1e5
 Ts:float = 1/fs
 t = np.arange(0,n*Ts,Ts)
+print(len(t))
 
 # Message signal parameters
 Am = 1
@@ -43,6 +44,6 @@ t0 = 0.3
 ax.set_xlim(left=t0,right=t0+2/fm)
 ax.grid()
 plt.show()
-fig.savefig("docs/fm_mod_test.png")
+# fig.savefig("docs/fm_mod_test.png")
 
 

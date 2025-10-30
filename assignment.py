@@ -24,15 +24,18 @@ kf = 5e5
 fc = 1e8
 
 # Sampling params
-fs = 1e10
+fs = 50*fc
 Ts = 1/fs
-n = 2**18
+n = int(round(fs/fm))
 t0 = 10/fm # To always depict steady-state behaviour
-t = np.arange(start=t0,stop=t0+n*Ts,step=Ts)
+t = np.arange(start=0,stop=n*Ts,step=Ts)
+print(t.shape)
 
 # Channel noise params
 psd = -180
+print(psd*fs)
 sd = np.sqrt((10**(psd*fs/10))*1e-6)
+print(sd)
 
 # Message signal 
 m = Am*np.cos(2*np.pi*fm*t)
@@ -42,7 +45,8 @@ mod = fm_mod(kf=kf,fc=fc,Ac=Ac)
 psi = mod.modulate(m=m,t=t,Ts=Ts)
 
 # Additive channel noise
-wgn = np.random.normal(loc=0,scale=sd,size=(1,n))
+wgn = np.random.normal(loc=0,scale=sd,size=(n,))
+print(wgn.shape)
 
 # Channel signal
 x = psi + wgn
@@ -52,5 +56,18 @@ demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_cutoff=2*fm,fs=fs,lpf_order=1000)
 m_noisy = demod.demodulate(x)
 m_noiseless = demod.demodulate(psi)
 
-
+# Plotting
+fig, ax = plt.subplots()
+ax.plot(t,m,'r')
+#ax.plot(t,psi,'b')
+ax.plot(t,m_noisy,'green')
+#ax.plot(t,m_noiseless,'black')
+ax.set(
+    xlabel="Time (s)",
+    ylabel="m(t)",
+    title="Message Signal Waveform",
+)
+ax.set_ylim(ymin=-2.0,ymax=+2.0)
+ax.grid()
+plt.show()
 

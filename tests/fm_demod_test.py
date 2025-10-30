@@ -33,12 +33,12 @@ psi = modulator.modulate(m,t,Ts)
 # print(psi)
 demod = demodulator.demodulate(psi)
 
-# Message signal plot
+# Plotting
 fig, ax = plt.subplots()
 
 ax.plot(t,m,'r')
 ax.plot(t,psi,'b')
-ax.plot(t,demod,c='green')
+ax.plot(t,demod,c='g')
 ax.set(
     xlabel="Time (s)",
     ylabel="m(t)",
@@ -48,6 +48,6 @@ t0 = 1
 ax.set_xlim(left=t0,right=t0+2/fm)
 ax.grid()
 plt.show()
-fig.savefig("docs/fm_demod_test.png")
+# fig.savefig("docs/fm_demod_test.png")
 
 
