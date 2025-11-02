@@ -74,7 +74,7 @@ m_noisy_fft = scipy.fft.fftshift(scipy.fft.fft(m_noisy_padded))
 # Time-domain waveform
 fig, ax = plt.subplots(nrows=2,ncols=1)
 ax[0].plot(t,m,'r')
-#ax.plot(t,psi,'b')
+ax[0].plot(t,psi,'b',':',alpha=0.1)
 ax[0].plot(t,m_noisy,'green')
 #ax.plot(t,m_noiseless,'black')
 ax[0].set(
@@ -82,10 +82,13 @@ ax[0].set(
     ylabel="m(t)",
     title="Message and Demodulation Signal Waveform",
 )
-ax[0].set_ylim(ymin=-2.0,ymax=+3.0)
+ax[0].set_ylim(
+    ymin=-2.0,
+    ymax=+5.0
+)
 ax[0].set_xlim(
-    left=2/fm,
-    right=3/fm
+    xmin=0.0,
+    xmax=0.008
 )
 ax[0].grid()
 #Frequency spectrum
