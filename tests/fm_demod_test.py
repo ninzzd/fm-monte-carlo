@@ -28,7 +28,7 @@ Ac = 1
 fc = 1e3
 
 modulator:fm_mod = fm_mod(kf=kf,Ac=Ac,fc=fc)
-demodulator:fm_demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_cutoff=fm/4,fs=fs,lpf_order=1000)
+demodulator:fm_demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_uc=fm/4,fs=fs,lpf_order=1000)
 psi = modulator.modulate(m,t,Ts)
 # print(psi)
 demod = demodulator.demodulate(psi)
