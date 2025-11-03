@@ -109,6 +109,9 @@ for psd in psd_arr:
         t_ss = t[n1:n2] # Time samples
         m_ss = m[n1:n2] # Message signal
         m_noisy_ss = m_noisy[n1:n2] # Noisy demodulated signal
+        m_noisy_ss = m_noisy_ss - np.mean(m_noisy_ss)
+        amp_gain = 2*Am/(np.max(m_noisy_ss) - np.min(m_noisy_ss)) # Linear peak-to-peak based amplification
+        m_noisy_ss = amp_gain*m_noisy_ss
         psi_ss = psi[n1:n2] # Noiseless modulated/channel signal
         x_ss = x[n1:n2] # Noisy modulated/channel signal
 

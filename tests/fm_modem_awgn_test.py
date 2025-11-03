@@ -67,6 +67,8 @@ print(m_noisy)
 t_ss = t[int(np.floor(t1*fs)):int(np.floor(t2*fs))]
 m_ss = m[int(np.floor(t1*fs)):int(np.floor(t2*fs))]
 m_noisy_ss = m_noisy[int(np.floor(t1*fs)):int(np.floor(t2*fs))]
+amp_gain = 2*Am/(np.max(m_noisy_ss) - np.min(m_noisy_ss))
+m_noisy_ss = amp_gain*m_noisy_ss
 print(f'length of m_ss={len(m_ss)}')
 print(f'length of m_noisy_ss={len(m_noisy_ss)}')
 ad_pad = 2 # Additional padding for increasing FFT resolution
