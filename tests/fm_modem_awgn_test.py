@@ -39,8 +39,9 @@ t2 = 0.006
 
 # Channel noise params
 psd = -180
-sd = np.sqrt((10**(psd/10))*1e-6*fs)
-print(sd)
+R = 50 # Characteristic impedance
+sd = np.sqrt((10**(psd/10))*1e-3*R*fs)
+print(sd**2)
 
 # Message signal 
 m = Am*np.cos(2*np.pi*fm*t)

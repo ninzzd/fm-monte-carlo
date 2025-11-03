@@ -4,7 +4,7 @@ import numpy as np
 from scipy.fft import fft,ifft
 import scipy.signal as sig
 class fm_demod:
-    def __init__(self,kf:float,fc:float,Ac:float,f_uc:float,f_lc:float,fs:float,order:float,gain:float):
+    def __init__(self,kf:float,fc:float,Ac:float,f_uc:float,f_lc:float,fs:float,order:float,gain:float,preemf:bool=False):
         self.kf = kf
         self.fc = fc
         self.Ac = Ac
@@ -22,6 +22,7 @@ class fm_demod:
             btype='highpass',
             output='sos',
         )
+        self.preemf = preemf
         # self.b = signal.firwin(
         #     numtaps=lpf_order+1,
         #     cutoff=f_cutoff*2/fs,

@@ -68,7 +68,7 @@ print(fom_arr)
 # ---------------------------------------------------------------------------------
 
 # Monte-Carlo simulation for FoM vs PSD
-n_mc = 50
+n_mc = 75
 j = 0
 for psd in psd_arr:
     fom_sum = 0
@@ -77,7 +77,8 @@ for psd in psd_arr:
         # ---------------------------------------------------------------------------------
 
         # Channel noise params
-        sd = np.sqrt((10**(psd/10))*1e-6*fs)
+        R = 50 # Channel characteristic impedence
+        sd = np.sqrt((10**(psd/10))*1e-3*R*fs)
         # print(sd)
 
         # ---------------------------------------------------------------------------------
@@ -115,15 +116,20 @@ for psd in psd_arr:
 
         # Power calculation
         p_m_ss = np.sum(m_ss**2)/n_ss
-        p_err_ss = np.sum(m_ss**2 - m_noisy_ss**2)/n_ss
-        snr_out = p_m_ss/p_err_ss
+        p_err_ss = np.sum((m_ss - m_noisy_ss)**2)/n_ss
         p_psi_ss = np.sum(psi_ss**2)/n_ss
-        snr_in = p_psi_ss/sd**2
+        var_n = sd**2
+        snr_out = p_m_ss/p_err_ss
+        snr_in = p_psi_ss/var_n
         fom = snr_out/snr_in
         fom_sum += fom
         curr_time = time.perf_counter()
         diff_time = curr_time - exec_start
-        print(f'For {psd} dB/Hz: Exp {i+1}) Figure of Merit  = {fom} [Elapsed time: {diff_time*1e3} ms]')
+        print(f'For {psd} dB/Hz: Exp {i+1}) Figure of Merit  = {fom} [Elapsed time: {diff_time*1e3} ms]:')
+        print(f'\tMessage signal power={p_m_ss}')
+        print(f'\tError signal power={p_err_ss}')
+        print(f'\tModulated signal power={p_psi_ss}')
+        print(f'\tNoise power={var_n}')
 
         # ---------------------------------------------------------------------------------
 
