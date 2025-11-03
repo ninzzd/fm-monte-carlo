@@ -58,7 +58,7 @@ wgn = np.random.normal(loc=0,scale=sd,size=(n,))
 x = psi + wgn
 
 # FM demodulated signal
-demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_lc=0.5*fm,f_uc=2*fm,fs=fs,order=4,gain=5)
+demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_lc=0.5*fm,f_uc=2*fm,fs=fs,order=10,gain=5)
 m_noisy = demod.demodulate(x)
 m_noiseless = demod.demodulate(psi)
 print(m_noisy)
@@ -69,64 +69,65 @@ m_ss = m[int(np.floor(t1*fs)):int(np.floor(t2*fs))]
 m_noisy_ss = m_noisy[int(np.floor(t1*fs)):int(np.floor(t2*fs))]
 amp_gain = 2*Am/(np.max(m_noisy_ss) - np.min(m_noisy_ss))
 m_noisy_ss = amp_gain*m_noisy_ss
-print(f'length of m_ss={len(m_ss)}')
-print(f'length of m_noisy_ss={len(m_noisy_ss)}')
-ad_pad = 2 # Additional padding for increasing FFT resolution
-n_ = int(2**(ad_pad+np.ceil(np.log2(len(m_ss)))))
-m_padded = np.pad(
-    array=m_ss,
-    pad_width=(0,n_-len(m_ss))
-)
-m_noisy_padded = np.pad(
-    array=m_noisy_ss,
-    pad_width=(0,n_-len(m_ss))
-)
-print(f'length of m_padded={len(m_padded)}')
-print(f'length of m_noisy_padded={len(m_noisy_padded)}')
-m_fft = scipy.fft.fftshift(scipy.fft.fft(m_padded))
-m_noisy_fft = scipy.fft.fftshift(scipy.fft.fft(m_noisy_padded))
+print(f'Max steady-state error= {np.max(np.abs(m_noisy_ss-m_ss))}')
+# print(f'length of m_ss={len(m_ss)}')
+# print(f'length of m_noisy_ss={len(m_noisy_ss)}')
+# ad_pad = 2 # Additional padding for increasing FFT resolution
+# n_ = int(2**(ad_pad+np.ceil(np.log2(len(m_ss)))))
+# m_padded = np.pad(
+#     array=m_ss,
+#     pad_width=(0,n_-len(m_ss))
+# )
+# m_noisy_padded = np.pad(
+#     array=m_noisy_ss,
+#     pad_width=(0,n_-len(m_ss))
+# )
+# print(f'length of m_padded={len(m_padded)}')
+# print(f'length of m_noisy_padded={len(m_noisy_padded)}')
+# m_fft = scipy.fft.fftshift(scipy.fft.fft(m_padded))
+# m_noisy_fft = scipy.fft.fftshift(scipy.fft.fft(m_noisy_padded))
 
-# Plotting
-# Time-domain waveform
-fig, ax = plt.subplots(nrows=2,ncols=1)
-ax[0].plot(t_ss,m_ss,'r',label='Message Signal')
-#ax[0].plot(t,psi,'b',ls=':',alpha=0.2,label='FM Modulated Signal')
-ax[0].plot(t_ss,m_noisy_ss,'green',label='Demodulated Signal')
-#ax.plot(t,m_noiseless,'black')
-ax[0].set(
-    xlabel="Time (s)",
-    ylabel="m(t)",
-    title="Message and Demodulation Signal Waveform",
-)
-ax[0].set_ylim(
-    ymin=-3.0,
-    ymax=+2.0
-)
-ax[0].set_xlim(
-    xmin=t1,
-    xmax=t2
-)
-ax[0].grid()
-#Frequency spectrum
-w = np.arange(
-    start = -fs/2,
-    step = fs/n_,
-    stop = fs/2
-)
-ax[1].plot(w,np.abs(m_fft),'r',label='FFT of Message Signal')
-#ax.plot(t,psi,'b')
-ax[1].plot(w,np.abs(m_noisy_fft),'green',label='FFT of Demodulated Signal')
-ax[1].legend()
-#ax.plot(t,m_noiseless,'black')
-ax[1].set(
-    xlabel=r'Frequency ($\omega$)',
-    ylabel=r'M($\omega$)',
-    title="Message and Demodulation Frequency Spectrum",
-)
-ax[1].set_xlim(
-    left=-2*fm,
-    right=+2*fm
-)
-ax[1].grid()
+# # Plotting
+# # Time-domain waveform
+# fig, ax = plt.subplots(nrows=2,ncols=1)
+# ax[0].plot(t_ss,m_ss,'r',label='Message Signal')
+# #ax[0].plot(t,psi,'b',ls=':',alpha=0.2,label='FM Modulated Signal')
+# ax[0].plot(t_ss,m_noisy_ss,'green',label='Demodulated Signal')
+# #ax.plot(t,m_noiseless,'black')
+# ax[0].set(
+#     xlabel="Time (s)",
+#     ylabel="m(t)",
+#     title="Message and Demodulation Signal Waveform",
+# )
+# ax[0].set_ylim(
+#     ymin=-3.0,
+#     ymax=+2.0
+# )
+# ax[0].set_xlim(
+#     xmin=t1,
+#     xmax=t2
+# )
+# ax[0].grid()
+# #Frequency spectrum
+# w = np.arange(
+#     start = -fs/2,
+#     step = fs/n_,
+#     stop = fs/2
+# )
+# ax[1].plot(w,np.abs(m_fft),'r',label='FFT of Message Signal')
+# #ax.plot(t,psi,'b')
+# ax[1].plot(w,np.abs(m_noisy_fft),'green',label='FFT of Demodulated Signal')
+# ax[1].legend()
+# #ax.plot(t,m_noiseless,'black')
+# ax[1].set(
+#     xlabel=r'Frequency ($\omega$)',
+#     ylabel=r'M($\omega$)',
+#     title="Message and Demodulation Frequency Spectrum",
+# )
+# ax[1].set_xlim(
+#     left=-2*fm,
+#     right=+2*fm
+# )
+# ax[1].grid()
 
-plt.show()
+# plt.show()

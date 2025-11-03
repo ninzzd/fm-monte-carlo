@@ -95,7 +95,7 @@ for psd in psd_arr:
         # ---------------------------------------------------------------------------------
 
         # FM demodulated signal
-        demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_lc=0.5*fm,f_uc=2*fm,fs=fs,order=4,gain=5)
+        demod = fm_demod(kf=kf,fc=fc,Ac=Ac,f_lc=0.5*fm,f_uc=2*fm,fs=fs,order=4,gain=1)
         m_noisy = demod.demodulate(x)
         # m_noiseless = demod.demodulate(psi)
         # print(m_noisy)
@@ -110,7 +110,9 @@ for psd in psd_arr:
         m_ss = m[n1:n2] # Message signal
         m_noisy_ss = m_noisy[n1:n2] # Noisy demodulated signal
         m_noisy_ss = m_noisy_ss - np.mean(m_noisy_ss)
-        amp_gain = 2*Am/(np.max(m_noisy_ss) - np.min(m_noisy_ss)) # Linear peak-to-peak based amplification
+        rms_m = np.sqrt(np.mean(m_ss**2))
+        rms_m_noisy_ss = np.sqrt(np.mean(m_noisy_ss**2))
+        amp_gain = rms_m/rms_m_noisy_ss # RMS ratio based amplification
         m_noisy_ss = amp_gain*m_noisy_ss
         psi_ss = psi[n1:n2] # Noiseless modulated/channel signal
         x_ss = x[n1:n2] # Noisy modulated/channel signal
